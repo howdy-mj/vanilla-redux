@@ -18,9 +18,11 @@ const reducer = (state =[], action) => {
   console.log(action)
   switch(action.type) {
     case ADD_TODO:
-      return [...state, { text: action.text, id: Date.now() }]
+      const newToDoObj = { text: action.text, id: Date.now() };
+      return [...state, newToDoObj]
     case DELETE_TODO:
-      return state.filter(toDo => toDo.id !== action.id)
+      const cleaned = state.filter(toDo => toDo.id !== action.id);
+      return cleaned;
     default:
       return state;
   }
@@ -55,13 +57,6 @@ const paintToDos = () => {
 }
 
 store.subscribe(paintToDos);
-
-
-const createToDo = toDo => {
-  const li = document.createElement("li");
-  li.innerText = toDo;
-  ul.appendChild(li);
-}
 
 const onSubmit = e => {
   e.preventDefault();
