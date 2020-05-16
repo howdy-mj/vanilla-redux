@@ -20,7 +20,24 @@ const reducer = (state =[], action) => {
 
 const store = createStore(reducer);
 
-store.subscribe(() => console.log(store.getState()))
+store.subscribe(() => console.log(store.getState()));
+
+const paintToDos = () => {
+  const toDos = store.getState();
+  ul.innerHTML = "";
+  toDos.forEach(toDo => {
+    const li = document.createElement("li");
+    li.id = toDo.id;
+    li.innerText = toDo.text;
+    ul.appendChild(li);
+  })
+}
+
+store.subscribe(paintToDos);
+
+const addToDo = (text) => {
+  store.dispatch({ type: ADD_TODO, text });
+}
 
 const createToDo = toDo => {
   const li = document.createElement("li");
@@ -28,12 +45,11 @@ const createToDo = toDo => {
   ul.appendChild(li);
 }
 
-
 const onSubmit = e => {
   e.preventDefault();
-  const toDo = input.value;
+  const text = input.value;
   input.value = "";
-  store.dispatch({type: ADD_TODO, text: toDo});
+  addToDo(text);
 };
 
 form.addEventListener("submit", onSubmit);
